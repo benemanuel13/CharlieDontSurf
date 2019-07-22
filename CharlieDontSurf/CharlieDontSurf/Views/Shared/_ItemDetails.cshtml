@@ -1,0 +1,225 @@
+﻿@using CharlieDontSurf.Models.Inventory
+@model CharlieDontSurf.Models.Inventory.ItemView
+
+<div id="mainContent">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="subheading">@Model.Item.Name</h1>
+            @if (Model.Item.HasSubItems)
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        Current Item:
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownList("subItems", Model.SelectableSubItems)
+                    </div>
+                </div>
+                <script>
+                    var content = $("#mainContent");
+                    content.css("padding-left", 40);
+                    content.css("padding-top", 20);
+
+                    var itemIndex = 0;
+                    var items = [];
+
+                    var thisItem;
+
+                    var model = {Id: @Model.Id, ItemId: @Model.Item.Id, SizeId: 0, StyleId: 0, Quantity: 1, Items: [
+                    
+                    @{ int itemCount = 0; }
+                    @foreach (ItemView view in Model.SubItems)
+                    {
+                    <text>
+                        {
+                            Id: @view.Id,
+                            ItemId : @view.Item.Id,
+                            SizeId : @view.SizeId,
+                            StyleId : @view.StyleId,
+                            sizes: [
+                                @{int count = 0; }
+                                @foreach (ItemSize size in view.ItemSizes)
+                            {
+                                @:{
+                                    <text>
+                                    id: @size.Id,
+                                    description: @size.Description
+                                    </text>
+                                @:}
+                                    { count++;
+                                    if (count < view.ItemSizes.Count)
+                                    {
+                                    @:,
+                                        }
+                                }
+                            }
+                            ],
+                            Quantity : @view.Quantity }
+                        @{ itemCount++;
+                        if (itemCount < Model.SubItems.Count)
+                            {
+                                @:,
+                            }
+                        }
+                    </text>
+                    }]};
+                </script>
+
+                <script language="javascript">
+                        $("#subItems").on("change",function(){
+                            var itemIndex = $("#subItems")[0].selectedIndex;
+                            var selectedItem = model.Items[itemIndex];
+                            CreateSizeBoxes(selectedItem);
+
+                            $("#quantities")[0].selectedIndex = selectedItem.Quantity - 1;
+                            SelectSize(selectedItem.SizeId);
+                            
+                            //SelectStyle(selectedItem.styleId);
+                            
+                        });
+
+                        $("#quantities").on("change",function(){
+                            var itemIndex = $("#subItems")[0].selectedIndex;
+                            var selectedItem = model.Items[itemIndex];
+                            selectedItem.Quantity = $("#quantities")[0].selectedIndex + 1;
+                        });
+
+                        var selectHtml;
+
+                        function CreateSizeBoxes(thisItem)
+                        {
+                            var theseSizes = thisItem.sizes;
+
+                            if (theseSizes.length == 0)
+                            {
+                                $("#sizeDropdown").add("sub-body");
+                                $("#sizeDropdown").html("Only One Size Available.<br/>");
+                            }
+                            else
+                            {
+                                $('#sizeDropdown').attr("class", "");
+
+                                selectHtml = "<select name=\"sizes\" id=\"sizes\" onclick=\"SelectNewSize()\">";
+                                theseSizes.forEach(GetSizes);
+                                selectHtml = selectHtml + "</select><br />";
+
+                                $("#sizeDropdown").html(selectHtml);
+                                selectHtml = "";
+                            }
+                        }
+
+                        function GetSizes(item)
+                        {
+                            selectHtml = selectHtml + "<option value=\"" + item.id + "\">" + item.description + "</option>";
+                        }
+
+                        function SelectNewQuantity()
+                        {
+                            //var itemIndex = $("#subItems")[0].selectedIndex;
+                            //model.Items[itemIndex].Quantity = $("quantities")[0].selectedIndex + 1;
+                        }
+
+                    function SelectNewSize()
+                    {
+                        var itemIndex = $("#subItems")[0].selectedIndex;
+                        model.Items[itemIndex].SizeId = $("#sizes")[0].options[$("#sizes")[0].selectedIndex].value;
+                    }
+
+                    function SelectSize(id)
+                    {
+                        for(i = 0; i <= model.Items.length; i++)
+                        {
+                            if($("#sizes")[0].options[i].value == id)
+                            {
+                                $("#sizes")[0].selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    SelectSize(@Model.SubItems[0].SizeId);
+                    $("#quantities")[0].selectedIndex = @Model.SubItems[0].Quantity - 1;
+
+                    function SelectNewStyle()
+                    {
+                        var itemIndex = $("subItems")[0].selectedIndex;
+                        model.Items[itemIndex].StyleId = $("style").val();
+                    }
+
+                    function SelectStyle(id)
+                    {
+                        for(i = 0; i < model.Items.length; i++)
+                        {
+                            if($("style").val() == id)
+                            {
+                                $("style")[0].selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                </script>
+
+                @Html.Partial("_ItemDetailsSelection", Model.SubItems[0]);
+            }
+            else
+            {
+                <script language="javascript">
+                    var content = $("#mainContent");
+                    content.css("padding-left", 100);
+                    content.css("padding-top", 70);
+
+                    var sizeId = @Model.SizeId;
+                    var styleId = @Model.StyleId;
+                    var quantity = @Model.Quantity;
+
+                    $("#quantities").on("change",function(){
+                        
+                        
+                    });
+
+                    function SelectNewQuantity()
+                    {
+                        quantity = $("#quantities")[0].selectedIndex + 1;
+                    }
+
+                    function SelectNewSize()
+                    {
+                        sizeId = $("#sizes")[0].options[$("#sizes")[0].selectedIndex].value;
+                    }
+
+                    function SelectNewStyle()
+                    {
+                    }
+                </script>
+                @Html.Partial("_ItemDetailsSelection", Model);
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="width: 400px; text-align:right; padding-top: 40px;">
+            @if (!Model.BasketBased)
+            {
+            if (!Model.Item.HasSubItems)
+            {
+                    <span onclick="addToBasket(@Model.Item.Id)" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; padding-right: 20px;">Add To Basket &raquo;</span>
+                }
+                else
+                {
+                    <span onclick="addToBasketMulti(@Model.Item.Id)" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; padding-right: 20px;">Add To Basket &raquo;</span>
+                }
+            }
+            else
+            {
+                if (!Model.Item.HasSubItems)
+                {
+                    <span onclick="updateBasket(@Model.Id, @Model.Item.Id)" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; padding-right: 20px;">Update Basket</span>
+                }
+                else
+                {
+                    <span onclick="updateBasketMulti(@Model.Id, @Model.Item.Id)" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; padding-right: 20px;">Update Basket</span>
+                }
+            }
+            <span onclick="cancelSelection()" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; padding-right: 20px;">Cancel</span>
+        </div>
+    </div>
+</div>

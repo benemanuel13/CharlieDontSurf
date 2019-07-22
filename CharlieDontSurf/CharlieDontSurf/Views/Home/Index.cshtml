@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+    
+<div class="row">
+    <div class="col-md-5">
+        <h2 class="subheading">Coming Soon!</h2>
+        <p class="sub-body">
+            Welcome to Charlie Don't Surf, soon we will be selling replica and 
+            original American style Vietnam clothing and accessories.<br/><br/>
+            This will include full uniforms as well as webbing, boots, ponchos, insignia 
+            and various other items.<br/><br/>
+            When the site opens properly, you will need to register / log-in in order to buy
+            from us, all we ask for is a username, your email address and a password.  We will
+            never pass this information on to a third party.<br/><br/>
+            You will still be able to browse without registering but that is all you be able to do.
+        </p>
+    </div>
+    <div class="col-md-7">
+        @{ Html.RenderAction("ShoppingMain", "Shopping"); }
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@model CharlieDontSurf.Models.Basket.BasketView
+
+@if (Model.Basket.IsEmpty)
+{
+    <div class="col-md-6">
+        <h2 class="subheading">Empty Shopping Basket</h2>
+        <p class="sub-body">
+            You currently do not have any items in your Shopping Basket.<br /><br /><br /><br />
+            <a href="/Home/Index" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite;">Return To Shopping &raquo;</a>
+        </p>
+    </div>
+}
+else
+{
+    <div class="col-md-6" style="padding-left: 20px;">
+        <h2 class="subheading">Your Shopping Basket</h2>
+        <p class="sub-body">
+            <div id="shoppingBasket">
+                @Html.Partial("_ShoppingBasket", Model.Basket) <br /><br />
+            </div>
+                <a href="/Home/Index" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite;">Return To Shopping &raquo;</a>
+                @if (Model.HasShippingAddress)
+                {
+                    <a id="completeOrder" onclick="completeOrder()" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; margin-left: 120px;">Complete Order / Pay</a>
+                }
+                else
+                {
+                    <a id="completeOrder" onclick="completeOrder()" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; margin-left: 120px; visibility: hidden;">Complete Order / Pay</a>
+                }
+        </p>
+    </div>
+}

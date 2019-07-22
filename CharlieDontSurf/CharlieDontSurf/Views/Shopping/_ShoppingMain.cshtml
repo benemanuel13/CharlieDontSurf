@@ -1,0 +1,22 @@
+﻿@model CharlieDontSurf.Models.Shopping.ShoppingModel
+@using CharlieDontSurf.Models.Inventory;
+
+<h2 class="subheading">Items for Sale</h2>
+
+<ul class="list-inline sub-body" style="margin-top: 20px;">
+    @{ int count = 1; }
+    @foreach (ItemType itemType in Model.ItemTypes)
+    {
+        <li><a id="@Html.Raw("itemType" + @itemType.Id)" onclick="showItems(@itemType.Id)" style="@if (count == 1) { @Html.Raw("font-weight: bolder; color: burlywood;") } cursor: pointer;" class="selectableTab">@itemType.Name</a></li>
+        if(count < Model.ItemTypes.Count())
+            {
+                @Html.Raw("|")
+                count++;
+            }
+        }
+</ul>
+<div id="itemList" class="container col-md-12" style="overflow-y: scroll; height:350px; border:solid; border-color:lightgray; border-width:1px; padding:3px, 3px, 3px, 3px;">
+    @Html.Partial("_ItemList", Model.Items)
+</div>
+
+<script src="~/Scripts/Shopping.js"></script>

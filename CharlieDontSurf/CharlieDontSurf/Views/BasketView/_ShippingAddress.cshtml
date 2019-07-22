@@ -1,0 +1,93 @@
+﻿@model CharlieDontSurf.Models.Shipping.ShippingAddressViewModel
+@using CharlieDontSurf.Models.Shipping;
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="subheading">Shipping Address</h2>
+
+        <h4 class="sub-body">Your Shipping Address.</h4>
+    </div>
+    @if(Model.ShippingAddressesMoreThanOne)
+    {
+        <div class="col-md-6">
+            <button class="btn btn-primary dropdown-toggle" style="background-color: forestgreen; border-color: antiquewhite;" type="button" data-toggle="dropdown">
+                Choose Shiping Address
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                @foreach (ShippingAddress address in Model.AvailableShippingAddresses)
+                {
+                    <li><a onclick="showShippingAddress(@address.Id)" style="cursor: pointer;">@address.AddressLine1</a></li>
+                }
+            </ul>
+</div>
+    }
+</div>
+<hr />
+<div class="row">
+<div class="sub-body">
+    @Html.Hidden("AddressId", @Model.Id)
+    <!--@Html.ValidationSummary("", new { @class = "text-danger", @Id = "Validator" })-->
+    <div class="form-group">
+        @Html.LabelFor(m => m.Recipient, new { @class = "col-md-4 control-label subheading" })
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Recipient, Model.Recipient)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddressLine1, new { @class = "col-md-4 control-label subheading" })
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.AddressLine1, Model.AddressLine1)
+        </div>
+    </div>
+    @if (Model.AddressLine2 != null && Model.AddressLine2 != "")
+    {
+    <div class="form-group">
+        <label class="col-md-4">
+            &nbsp;
+        </label>
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.AddressLine2, Model.AddressLine2)
+        </div>
+    </div>
+    }
+    <div class="form-group">
+        @Html.LabelFor(m => m.City, new { @class = "col-md-4 control-label subheading" })
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.City, Model.City)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.County, new { @class = "col-md-4 control-label subheading" })
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.County, Model.County)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Postcode, new { @class = "col-md-4 control-label subheading" })
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Postcode, Model.Postcode)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Country, new { @class = "col-md-4 control-label subheading" })
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Country, Model.Country)
+        </div>
+    </div>
+</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="sub-body">
+        <div class="col-md-10">
+            @if (Model.CanAddShippingAddress)
+            {
+                <span onclick="defineShippingAddress()" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite;">Add Address</span>
+            }
+            <span id="editAddress" onclick="editShippingAddress()" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite;">Edit Address</span>
+            <span onclick="deleteShippingAddress()" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite;">Delete Address</span>
+        </div>
+    </div>
+</div>

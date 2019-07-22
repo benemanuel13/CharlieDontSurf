@@ -1,0 +1,36 @@
+﻿@model CharlieDontSurf.Models.Inventory.ItemView
+
+<div class="row">
+    <div class="col-md-4 sub-body">
+        Quantity:
+    </div>
+    <div class="col-md-6 sub-body">
+        @Html.DropDownList("quantities", Model.SelectableQuantities, new { @onclick = "SelectNewQuantity()", @style = "width: 70px" }) <br />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 sub-body">
+        Size:<br/>
+        Style:
+    </div>
+    <div class="col-md-6 sub-body">
+        @if (Model.HasSizes)
+        {
+            <span id="sizeDropdown">
+                @Html.DropDownList("sizes", Model.SelectableItemSizes, new { @onclick = "SelectNewSize()" }) <br />
+            </span>
+        }
+        else
+        {
+            <span id="sizeDropdown" class="sub-body">Only One Size Available.<br /></span>
+        }
+        @if (Model.HasStyles)
+        {
+            @Html.DropDownList("style", Model.SelectableItemStyles, new { @onclick = "SelectNewStyle()" })
+        }
+        else
+        {
+            <span class="sub-body">Only One Style Available.</span>
+        }
+    </div>
+</div>

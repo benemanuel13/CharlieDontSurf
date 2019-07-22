@@ -1,0 +1,43 @@
+﻿@using CharlieDontSurf.Models.Basket
+@model CharlieDontSurf.Models.Basket.Basket
+
+<div class="row">
+    <div class="col-md-7">
+        <span class="sub-body" style="font-size: larger;">Item Name</span>
+    </div>
+    <div class="col-md-1">
+        
+    </div>
+    <div class="col-md-1">
+        
+    </div>
+    <div class="col-md-3" style="text-align: right; font-size: larger;">
+        <span class="sub-body">Price (£)</span>
+    </div>
+</div>
+<hr />
+@foreach (BasketItem item in Model.Items)
+{
+    <div class="row">
+        <div class="col-md-7 sub-body">
+            @item.Name
+        </div>
+        <div class="col-md-1 sub-body">
+            <a onclick="viewBasketItemDetailsSelection(@item.Id)" style="cursor: pointer;">Edit</a>
+        </div>
+        <div class="col-md-2 sub-body">
+            <a onclick="deleteItem(@item.Id)" style="cursor: pointer;">Delete</a>
+        </div>
+        <div class="col-md-2 sub-body" style="text-align:right;">
+            @item.TotalPrice.ToString("##0.00")
+        </div>
+    </div>
+}
+<hr />
+<div class="row">
+    <div class="col-md-10">
+    </div>
+    <div class="col-md-2" style="text-align: right;">
+        <span class="sub-body">£@Model.TotalPrice.ToString("##0.00")</span>
+    </div>
+</div>

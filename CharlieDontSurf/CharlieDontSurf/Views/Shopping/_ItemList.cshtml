@@ -1,0 +1,34 @@
+﻿@using CharlieDontSurf.Models.Inventory;
+@model List<Item>
+
+<script src="~/Scripts/ItemList.js"></script>
+
+@foreach (Item item in Model)
+{
+    <img id="@Html.Raw("image" + item.Id)" style="display:none;" onload="paintImage(@item.Id);" src="@Html.Raw("/Images/" + item.Id + "_small.jpg")" />
+
+    <div class="row">
+        <div class="col-md-6 vcenter">
+            <div>
+                <a href="@Html.Raw("/ItemView/ItemView/" + item.Id)">
+                    <canvas id="@Html.Raw("canvas" + item.Id)" height="327" width="327"></canvas>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-5 itemDescription" style="background-color: forestgreen;">
+            <span style="font-size: large;" class="subheading">@item.Name</span>
+            <div class="sub-body">
+                @item.Description
+                <hr />
+                <div style="height: 200px;">
+                    @item.FullDescription
+                </div>
+                <a href="@Html.Raw("/ItemView/ItemView/" + item.Id)">
+                    <span class="btn btn-primary btn-sm" style="margin-left: 5px; background-color: forestgreen; border-color: antiquewhite; text-align:right; padding-right: 20px;">View Item In Detail</span>
+                </a>
+                <span style="margin-right: 5px; text-align: right; float: right; padding-left:4px; padding-right: 4px; background-color: antiquewhite; color: black; border: 1px solid black;">£@item.Price.ToString("#0.00")</span>
+            </div>
+        </div>
+    </div>
+}
+

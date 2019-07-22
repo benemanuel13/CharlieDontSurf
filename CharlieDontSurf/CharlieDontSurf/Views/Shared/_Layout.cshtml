@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Charlie Don't Surf</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body class="all-body">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("charliedontsurf.net", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @style = "color: forestgreen;" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+                @if (Request.IsAuthenticated)
+                {
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        @Html.Raw(@Html.ActionLink("[replacetext]", "Index", "Home", new { area = "" }, new { @style = "color: yellow; margin-right: 20px;", @data_toggle = "dropdown", @class = "dropdown-toggle" }).ToHtmlString().Replace("[replacetext]", "<img class=\"basket\" src=\"/Images/basket.png\" /> Shopping Basket <b class=\"caret\"></b>"))
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("View / Edit Basket", "Index", "BasketView")</li>
+                            <li>@Html.ActionLink("Empty Basket", "Index", "Home")</li>
+                            <!--<li class="divider"></li>
+                            <li>@Html.ActionLink("Manage Shipping Details", "Index", "Home")</li>
+                                -->
+                        </ul>
+                    </li>
+                    <li class="divider"></li>
+                </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <h1 class="main-title">Charlie Don't Surf</h1>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p style="color: lightgreen;">&copy; @DateTime.Now.Year - Ben Emanuel &amp; Clint Ventham</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

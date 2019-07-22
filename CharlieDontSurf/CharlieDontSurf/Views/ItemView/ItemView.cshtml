@@ -1,0 +1,49 @@
+﻿@model CharlieDontSurf.Models.Inventory.Item
+@using CharlieDontSurf.Models.Inventory;
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div id=""popup" class="popup">
+    <div id="itemPopup" class="popuptext">
+        <div id="itemDetails" class="sub-body" style="width: 570px; height: 370px; margin-left: 10px; font-size: large;">Please wait, loading...</div>
+    </div>
+</div>
+
+    @Html.Hidden("ItemId", @Model.Id)
+    @Scripts.Render("~/bundles/itemsView")
+
+    <img id="smallBackdrop" style="display:none;" src="/Images/smallBackdrop.png" />
+    <img id="largeBackdrop" style="display:none;" src="/Images/largeBackdrop.png" />
+
+    <img id="smallImage" style="display:none;" src="@Html.Raw("/Images/" + Model.Id + "_small.jpg")" />
+    <img id="largeImage" style="display:none;" src="@Html.Raw("/Images/" + Model.Id + "_large.jpg")" />
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="subheading">@Model.Name</h2>
+            <div>
+                <canvas id="smallCanvas" width="327" height="327" style="border:1px solid #d3d3d3;" onmousemove="canvas_mouseMove()"></canvas>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div>
+                <canvas id="largeCanvas" width="450" height="450" style="border:1px solid #d3d3d3;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div style="height: 370px;">
+                <h3 class="subheading">@Model.Description</h3>
+                <div class="sub-body">@Model.FullDescription</div>
+                <h4 class="sub-body" style="text-align:right; padding-right: 25px; color: darkkhaki;">£ @Model.Price.ToString("#0.00")</h4>
+            </div>
+            @if (Request.IsAuthenticated)
+            {
+                <span onclick="viewItemDetailsSelection(@Model.Id)" class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; text-align:right; padding-right: 20px;">Add To Basket</span>
+            }
+            <a href="/Home/Index">
+                <span class="btn btn-primary btn-lg" style="background-color: forestgreen; border-color: antiquewhite; text-align:right; padding-right: 20px;">Cancel</span>
+            </a>
+        </div>
+    </div>

@@ -1,0 +1,32 @@
+﻿@model CharlieDontSurf.Models.Basket.BasketView
+
+@{
+    ViewBag.Title = "Shopping Basket";
+}
+
+<div id="" popup" class="popup">
+    <div id="itemPopup" class="popuptext">
+        <div id="itemDetails" class="sub-body" style="width: 570px; height: 370px; margin-left: 10px; font-size: large;">Please wait, loading...</div>
+    </div>
+</div>
+
+<div class="row">
+    <div id="subShoppingBasket">
+        @Html.Partial("_SubShoppingBasket", Model)
+    </div>
+    <div id="shippingAddress" class="col-md-6">
+    @if (!Model.HasShippingAddress)
+    {
+        @Html.Partial("_NoShippingAddress")
+    }
+    else
+    {
+        @Html.Partial("_ShippingAddress", Model.ShippingAddress)
+    }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/basketView")
+    @Scripts.Render("~/bundles/jqueryval")
+}
